@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexOrder.AuthService", "NexOrder.AuthService\NexOrder.AuthService.csproj", "{F2CED65F-2E2C-9D22-78A8-22E6161ECF90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexOrder.AuthService.Infrastructure", "NexOrder.AuthService.Infrastructure\NexOrder.AuthService.Infrastructure.csproj", "{F692A76B-46E4-FC21-DEB0-F23332727905}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2CED65F-2E2C-9D22-78A8-22E6161ECF90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2CED65F-2E2C-9D22-78A8-22E6161ECF90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2CED65F-2E2C-9D22-78A8-22E6161ECF90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2CED65F-2E2C-9D22-78A8-22E6161ECF90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F692A76B-46E4-FC21-DEB0-F23332727905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F692A76B-46E4-FC21-DEB0-F23332727905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F692A76B-46E4-FC21-DEB0-F23332727905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F692A76B-46E4-FC21-DEB0-F23332727905}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DEA84B77-21B1-44D1-8A1F-4F4C91C47B1A}
+	EndGlobalSection
+EndGlobal
