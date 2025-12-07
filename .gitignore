@@ -3,3 +3,14 @@
 ################################################################################
 
 /.vs
+/NexOrder.AuthService.Infrastructure/bin/Debug/net8.0/NexOrder.AuthService.Infrastructure.dll
+/NexOrder.AuthService.Infrastructure/bin/Debug/net8.0/NexOrder.AuthService.Infrastructure.pdb
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0/NexOrder.AuthService.Infrastructure.AssemblyInfo.cs
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0/NexOrder.AuthService.Infrastructure.AssemblyInfoInputs.cache
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0/NexOrder.AuthService.Infrastructure.csproj.BuildWithSkipAnalyzers
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0/NexOrder.AuthService.Infrastructure.csproj.FileListAbsolute.txt
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0/NexOrder.AuthService.Infrastructure.dll
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0/NexOrder.AuthService.Infrastructure.pdb
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0/NexOrder.AuthService.Infrastructure.sourcelink.json
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0/refint/NexOrder.AuthService.Infrastructure.dll
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0/ref/NexOrder.AuthService.Infrastructure.dll
