@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="NexOrder.AuthService.Infrastructure/NexOrder.AuthService.Infrastructure.csproj" Id="9307c122-611e-45d3-a144-67b321542019" />
+  <Project Path="NexOrder.AuthService/NexOrder.AuthService.csproj" />
+</Solution>

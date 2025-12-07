@@ -1,0 +1,12 @@
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\bin\Debug\net8.0\NexOrder.AuthService.Infrastructure.deps.json
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\bin\Debug\net8.0\NexOrder.AuthService.Infrastructure.dll
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\bin\Debug\net8.0\NexOrder.AuthService.Infrastructure.pdb
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\obj\Debug\net8.0\NexOrder.AuthService.Infrastructure.csproj.AssemblyReference.cache
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\obj\Debug\net8.0\NexOrder.AuthService.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\obj\Debug\net8.0\NexOrder.AuthService.Infrastructure.AssemblyInfoInputs.cache
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\obj\Debug\net8.0\NexOrder.AuthService.Infrastructure.AssemblyInfo.cs
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\obj\Debug\net8.0\NexOrder.AuthService.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\obj\Debug\net8.0\NexOrder.AuthService.Infrastructure.dll
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\obj\Debug\net8.0\refint\NexOrder.AuthService.Infrastructure.dll
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\obj\Debug\net8.0\NexOrder.AuthService.Infrastructure.pdb
+C:\Mitanshu\Practice\Dotnet core\NexOrderApp\NexOrder.AuthService\NexOrder.AuthService.Infrastructure\obj\Debug\net8.0\ref\NexOrder.AuthService.Infrastructure.dll
