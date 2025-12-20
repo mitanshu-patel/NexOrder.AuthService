@@ -32,6 +32,6 @@ public class AuthenticationFunction
         string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
         var data = JsonConvert.DeserializeObject<UserRequest>(requestBody);
         var token = this.authenticationService.IssueJWT(data.Email);
-        return new OkObjectResult(token);
+        return new OkObjectResult(new {Token = token});
     }
 }
