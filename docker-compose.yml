@@ -1,0 +1,20 @@
+networks:
+  nexorderauthservicenetwork:
+  
+services:
+   nexorderauthservice:
+    container_name: nexorderauthservice
+    build:
+      context: .
+      dockerfile: NexOrder.AuthService/Dockerfile
+    networks: 
+        - nexorderauthservicenetwork
+    env_file:
+      # Following environment variables are needed in local.env:
+        # AuthSecret=<authsecret>
+        # ExpirationMinutes=<expiration_in_minutes>
+        # Audience=<audience_name>
+        # Issuer=<issuer_name>
+        - local.env
+    ports:
+        - 7026:80 
