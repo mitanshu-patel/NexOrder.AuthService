@@ -34,7 +34,7 @@ jobs:
           context: .
           push: true
           tags: practiceregistry.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_72143F1BA3BE4B12A8B9CBA1D5F8811D }}/nexorder-authservice:${{ github.sha }}
-          file: ./Dockerfile
+          file: NexOrder.AuthService/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
