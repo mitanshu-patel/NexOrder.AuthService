@@ -60,15 +60,109 @@ This ensures the authentication service is not publicly accessible and enforces 
 
 ---
 
-## Deployment (GitHub Actions)
+## 🐳 Docker Support
 
-The Azure Function App is deployed using GitHub Actions:
+Similar to other NexOrder services, this service supports running locally and deploying via containers.
 
-- The Azure portal is configured to reference the GitHub repository.
-- Code push triggers the workflow pipeline.
-- The function is automatically built and deployed to Azure.
+### Prerequisites
 
-This supports automated CI/CD for incremental deployments.
+- Docker Desktop (or Docker Engine)
+- Docker Compose v2
+
+### 🧱 Dockerfile
+
+A `Dockerfile` is included to build a container image for the service.
+
+Build an image locally:
+
+```bash
+docker build -t nexorder-authservice:local .
+```
+
+Run the container (example):
+
+```bash
+docker run --rm -p 8080:80 \
+  -e AuthSecret="<secret-key>" \
+  -e ExpirationMinutes="<expirationtimeinminutes>" \
+  -e Audience="<audience-name>" \
+  -e Issuer="<issuer-name>" \
+  nexorder-authservice:local
+```
+
+> Note: Actual port bindings and hosting settings depend on how the Function host is configured in the container.
+> 
+
+### 🧩 Docker Compose
+
+A `docker-compose.yml` is included to simplify local orchestration.
+
+Start services:
+
+```bash
+docker compose up --build
+```
+
+Stop services:
+
+```bash
+docker compose down
+```
+
+### 🔐 Configuration in Containers
+
+For local containers, prefer **environment variables** (or a local `.env` file referenced by Compose) rather than committing secrets.
+
+Common keys:
+
+- `AuthSecret`
+- `ExpirationMinutes`
+- `Audience`
+- `Issuer`
+
+---
+
+## 🚢 Deployment
+
+### GitHub Actions
+
+The service supports two deployment workflows using **GitHub Actions** with Azure:
+
+1. **Standard deployment (without containerization)** — builds and deploys the Function App directly
+2. **Containerized deployment** — builds a Docker image, pushes to Azure Container Registry, and deploys to Azure Web App for Containers
+
+> **Currently, only the containerized deployment workflow is enabled.**
+> 
+
+### Standard Deployment Workflow (Disabled)
+
+When enabled, this workflow:
+
+- Builds & restores the .NET project
+- Applies EF Core migrations (controlled pipeline step)
+- Deploys directly to Azure Functions
+
+> API Management instances are recreated on demand for cost optimization in non-production environments.
+> 
+
+### 🧊 Containerized Deployment Workflow (Active)
+
+This service is deployed as a container to **Azure Web App for Containers**.
+
+High-level flow:
+
+1. Build the Docker image via GitHub Actions
+2. Push image to **Azure Container Registry**
+3. Configure Azure Web App for Containers to pull and run the image
+4. Provide required configuration via **App Settings** (environment variables)
+
+Recommended App Settings (examples):
+
+- `AuthSecret`
+- `ExpirationMinutes`
+- `Audience`
+- `Issuer`
+- Any other runtime configuration used by the Function host
 
 ---
 
