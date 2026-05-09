@@ -2,7 +2,19 @@ networks:
   nexorderauthservicenetwork:
   
 services:
-   nexorderauthservice:
+ nexorderuserssql:
+    container_name: nexorderauthsql
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    env_file:
+      - local.env
+    ports:
+      - 1431:1433
+    volumes:
+      - nexorderauthsql_data:/var/opt/mssql
+    networks:
+      - nexorderauthservicenetwork
+   
+ nexorderauthservice:
     container_name: nexorderauthservice
     build:
       context: .
@@ -11,10 +23,22 @@ services:
         - nexorderauthservicenetwork
     env_file:
       # Following environment variables are needed in local.env:
+        # DB_SERVER_NAME=nexorderauthsql
+        # ACCEPT_EULA=Y
+        # SA_PASSWORD=db_password
+        # DB_NAME=db_name
+        # DB_PASSWORD=db_password!
         # AuthSecret=<authsecret>
         # ExpirationMinutes=<expiration_in_minutes>
         # Audience=<audience_name>
         # Issuer=<issuer_name>
+        # RunMigration=true/false
         - local.env
     ports:
-        - 7026:80 
+        - 7026:80
+    depends_on:
+      - nexorderauthsql
+
+volumes:
+    nexorderauthsql_data:
+      driver: local

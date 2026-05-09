@@ -15,6 +15,16 @@ COPY ["NexOrder.AuthService.Infrastructure/NexOrder.AuthService.Infrastructure.c
 RUN dotnet restore "./NexOrder.AuthService/NexOrder.AuthService.csproj"
 COPY . .
 WORKDIR "/src/NexOrder.AuthService"
+
+ARG GITHUB_USERNAME
+ARG GITHUB_TOKEN
+
+RUN dotnet nuget add source https://nuget.pkg.github.com/$GITHUB_USERNAME/index.json \
+    --name github \
+    --username $GITHUB_USERNAME \
+    --password $GITHUB_TOKEN \
+    --store-password-in-clear-text
+
 RUN dotnet build "./NexOrder.AuthService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

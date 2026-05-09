@@ -7,7 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.22">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.22">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.22" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NexOrder.AuthService.Application\NexOrder.AuthService.Application.csproj" />
+    <ProjectReference Include="..\NexOrder.AuthService.Domain\NexOrder.AuthService.Domain.csproj" />
+    <ProjectReference Include="..\NexOrder.AuthService.Shared\NexOrder.AuthService.Shared.csproj" />
   </ItemGroup>
 
 </Project>

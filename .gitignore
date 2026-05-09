@@ -17,3 +17,13 @@
 /NexOrder.AuthService.Infrastructure/bin/Release/net8.0
 /NexOrder.AuthService.Infrastructure/obj/Release/net8.0
 /local.env
+/local.env
+/NexOrder.AuthService.Application/bin/Debug/net8.0
+/NexOrder.AuthService.Application/obj
+/NexOrder.AuthService.Domain/bin/Debug/net8.0
+/NexOrder.AuthService.Domain/obj
+/NexOrder.AuthService.Infrastructure/bin/Debug/net8.0
+/NexOrder.AuthService.Infrastructure/obj/Debug/net8.0
+/NexOrder.AuthService.Shared/bin/Debug/net8.0
+/NexOrder.AuthService.Shared/obj
+/NexOrder.AuthService.Infrastructure/local.settings.json
