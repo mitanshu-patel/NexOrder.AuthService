@@ -1,6 +1,6 @@
 # NexOrder.AuthService
 
-NexOrder.AuthService is an authentication microservice within the NexOrder platform. It is built using Azure Function Apps and responsible for issuing secure JWT tokens to validated consumers. The service is designed with microservices principles and restricts access through Azure API Management.
+NexOrder.AuthService is an authentication microservice within the NexOrder platform. It is built using Azure Function Apps and responsible for issuing secure JWT tokens to validated consumers. Also responsible for generating refresh tokens when access token gets expired. The service is designed with microservices principles and restricts access through Azure API Management.
 
 ---
 
@@ -8,31 +8,16 @@ NexOrder.AuthService is an authentication microservice within the NexOrder platf
 
 This solution consists of the following components:
 
-| Component | Description |
-|----------|-------------|
-| NexOrder.AuthService | Azure Function App responsible for authentication endpoints |
-| NexOrder.AuthService.Infrastructure | Class library responsible for token creation and authentication logic |
-| Azure API Management | Acts as the secured gateway for accessing the function |
-| GitHub Actions | Automates deployment to Azure Function App |
-| CORS & Access Restrictions | Ensures only APIM can access the function app |
+```
+NexOrder.AuthService
+├── NexOrder.AuthService               # Azure Functions host
+├── NexOrder.AuthService.Domain        # Domain entities & business rules
+├── NexOrder.AuthService.Application   # Use cases, handlers, interfaces
+├── NexOrder.AuthService.Infrastructure# EF Core, DB context, migrations
+├── NexOrder.AuthService.Shared        # Shared utilities & common models
+```
 
 The architecture supports future expansion of NexOrder microservices operating independently.
-
----
-
-## Project Structure
-
-NexOrder.AuthService
-│
-├── NexOrder.AuthService                # Azure Function App
-│   └── Contains function triggers and endpoints for authentication
-│
-└── NexOrder.AuthService.Infrastructure # Class library
-    ├── Implements JWT token generation
-    ├── Handles token expiration and validation
-    └── Manages audience and issuer logic
-
----
 
 ## Configuration (App Settings)
 
@@ -43,7 +28,8 @@ The application requires the following configuration values:
 | AuthSecret | Secret key of generating token |
 | ExpirationMinutes | Token expiration duration in minutes |
 | Audience | The intended audience the JWT is issued for |
-| Issuer | The authority issuing the token |
+| RefreshTokenExpirationMinutes | Refresh Token expiration duration in minutes |
+| Encryption__EncryptionKey | Encryption key |
 
 These settings are defined in Azure Function App → Configuration, and are not committed to source control.
 
@@ -119,6 +105,8 @@ Common keys:
 - `ExpirationMinutes`
 - `Audience`
 - `Issuer`
+- `RefreshTokenExpirationMinutes`
+- `Encryption__EncryptionKey`
 
 ---
 
@@ -186,12 +174,42 @@ Requests executed locally will bypass access restrictions; however, once deploye
 
 ---
 
+## Private Nuget Packages
+
+This project depends on the **NexOrder.Framework** package, which is hosted via GitHub Packages. To successfully build the project in a GitHub Actions environment, the workflow must be configured to authenticate with the private NuGet source.
+
+### GitHub Actions Workflow Update
+
+An additional step is required before the `dotnet restore` command to register the private source using the `GITHUB_TOKEN`.
+
+Add the following step to your `.github/workflows/main_nexorder-authservice.yml` file:
+
+```yaml
+- name: Add Private NuGet Source
+  run: |
+    dotnet nuget add source "[https://nuget.pkg.github.com/mitanshu-patel/index.json](https://nuget.pkg.github.com/mitanshu-patel/index.json)" \
+      --name "github" \
+      --username "${{ github.actor }}" \
+      --password "${{ secrets.GITHUB_TOKEN }}" \
+      --store-password-in-clear-text
+
+- name: Restore dependencies
+  run: dotnet restore
+```
+
+### Local Development
+
+For local development, developer will need add new Nuget source with the url of index.json as mentioned above and use PAT(Personal Access Token) created via Developer settings, for more refer ```Readme.md``` of **NexOrder.Framework**.
+
+---
+
 ## Summary
 
 | Feature | Implemented |
 |--------|-------------|
 | Azure Function authentication service | Yes |
 | JWT token generation | Yes |
+| Refresh token generation | Yes |
 | GitHub Actions CI/CD | Yes |
 | API Management secured access | Yes |
 | CORS restricted to APIM | Yes |
