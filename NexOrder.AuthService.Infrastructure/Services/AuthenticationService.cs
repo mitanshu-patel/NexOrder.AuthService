@@ -46,19 +46,21 @@ namespace NexOrder.AuthService.Infrastructure.Services
                 return (null, "Invalid Refresh Access Token");
             }
 
-            var areClaimsMatched = refreshTokenClaims.All(v=>accessTokenClaims.Contains(v));
-            if(!areClaimsMatched)
+            var areClaimsMatched = refreshTokenClaims.All(v =>
+                                        accessTokenClaims.Any(t => t.Type == v.Type &&
+                                             t.Value == v.Value));
+            if (!areClaimsMatched)
             {
                 return (null, "Claims not matched");
             }
 
             var userId = refreshTokenClaims.FirstOrDefault(v => v.Type == "userId")?.Value ?? string.Empty;
             var userGuid = Guid.Parse(userId);
-            var email = refreshTokenClaims.FirstOrDefault(v => v.Type == "email")?.Value ?? string.Empty;
-            var encryptedToken = this.encryptionDecryptionService.EncryptSecret(refreshToken);
+            var email = refreshTokenClaims.FirstOrDefault(v => v.Type == "username")?.Value ?? string.Empty;
+            var jti = this.GetJti(accessToken);
             var refreshTokenDetail = await this.authRepo.GetRefreshTokens()
                                                         .FirstOrDefaultAsync(v =>
-                                                        v.Token.Equals(encryptedToken) &&
+                                                        v.JwtId.Equals(jti) &&
                                                         v.UserId == userGuid &&
                                                         v.Email == email);
 
@@ -67,11 +69,19 @@ namespace NexOrder.AuthService.Infrastructure.Services
                 return (null, "Refresh Token not matched");
             }
 
-            if(refreshTokenDetail.ExpiryDate <= DateTime.Now)
+            if (refreshTokenDetail.Invalidated)
+                return (null, "Refresh Token already expired, try generating new access token");
+
+            // invalidate the current refresh token in database as we are going to generate new refresh token and return it to user
+            refreshTokenDetail.Invalidated = true;
+            await this.authRepo.SaveRefreshTokenAsync(refreshTokenDetail);
+
+            if (refreshTokenDetail.ExpiryDate <= DateTime.Now)
             {
                 return (null, "Refresh Token already expired, try generating new access token");
             }
 
+            // invalidate the current refresh token in database as we are going to generate new refresh token and return it to user
             refreshTokenDetail.Invalidated = true;
             await this.authRepo.SaveRefreshTokenAsync(refreshTokenDetail);
 
@@ -84,15 +94,16 @@ namespace NexOrder.AuthService.Infrastructure.Services
         {
            
             var (tokenId, accessToken) = this.IssueJWT(email, userId, accessTokenExpirationMinutes);
-            var (_, refreshTokenValue) = this.IssueJWT(email, userId, refreshTokenExpirationMinutes * 2);
+            var (_, refreshTokenValue) = this.IssueJWT(email, userId, refreshTokenExpirationMinutes);
             var encryptedTokenValue = this.encryptionDecryptionService.EncryptSecret(refreshTokenValue);
             var refreshToken = new RefreshToken
             {
                 UserId = userId,
-                ExpiryDate = DateTime.UtcNow.AddMinutes(this.refreshTokenExpirationMinutes),
+                ExpiryDate = DateTime.Now.AddMinutes(this.refreshTokenExpirationMinutes),
                 Token = encryptedTokenValue,
                 Invalidated = false,
                 JwtId = tokenId,
+                Email = email
             };
 
             await this.authRepo.SaveRefreshTokenAsync(refreshToken);
@@ -114,7 +125,7 @@ namespace NexOrder.AuthService.Infrastructure.Services
                 IssuerSigningKey = new SymmetricSecurityKey(key)
             }, out _);
 
-            return claimsPrincipal?.Claims.ToList() ?? [];
+            return claimsPrincipal?.Claims.Where(v => v.Type== "username" || v.Type == "userId").ToList() ?? [];
         }
 
         private (string jwtId, string token) IssueJWT(string user, Guid userId, int expirationMinutes)
@@ -126,7 +137,8 @@ namespace NexOrder.AuthService.Infrastructure.Services
                 {
                     new Claim("username", user),
                     new Claim("role", "User"),
-                    new Claim("userId", userId.ToString())
+                    new Claim("userId", userId.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt16(expirationMinutes)),
                 Audience = this.audience,
@@ -141,6 +153,12 @@ namespace NexOrder.AuthService.Infrastructure.Services
             var jwt = tokenHandler.WriteToken(token);
             var jwtId = tokenHandler.ReadJwtToken(jwt).Id;
             return (jwtId, jwt);
+        }
+
+        private string GetJti(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            return tokenHandler.ReadJwtToken(token).Id;
         }
 
         public string IssueJWT(Guid userId, int expirationMinutes)

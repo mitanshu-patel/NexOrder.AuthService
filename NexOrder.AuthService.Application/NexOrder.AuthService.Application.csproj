@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NexOrder.Framework.Core" Version="1.0.5" />
+    <PackageReference Include="NexOrder.Framework.Core" Version="1.0.6" />
   </ItemGroup>
 
   <ItemGroup>
