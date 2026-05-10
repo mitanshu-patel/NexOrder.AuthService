@@ -35,6 +35,41 @@ jobs:
           push: true
           tags: practiceregistry.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_72143F1BA3BE4B12A8B9CBA1D5F8811D }}/nexorder-authservice:${{ github.sha }}
           file: NexOrder.AuthService/Dockerfile
+          build-args: |
+            GITHUB_USERNAME=${{ github.repository_owner }}
+            GITHUB_TOKEN=${{ secrets.NUGET_TOKEN }}
+          
+  migrate:
+   runs-on: ubuntu-latest
+   needs: build
+   steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install dotnet-ef (global)
+      run: |
+        dotnet tool install --global dotnet-ef --version 8.0.*
+        echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+    - name: Add GitHub NuGet source
+      run: |
+        dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json \
+          --name github \
+          --username ${{ github.repository_owner }} \
+          --password ${{ secrets.NUGET_TOKEN }} \
+          --store-password-in-clear-text
+    - name: Run EF Core migrations
+      env:
+        DB_CONNECTION: ${{ secrets.SQL_CONN }}
+      run: |
+        dotnet ef database update \
+          --project NexOrder.AuthService.Infrastructure \
+          --startup-project NexOrder.AuthService.Infrastructure \
+          --connection "$DB_CONNECTION"
 
   deploy:
     runs-on: ubuntu-latest
